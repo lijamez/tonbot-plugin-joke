@@ -4,62 +4,45 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 
 import net.tonbot.common.Activity;
 import net.tonbot.common.ActivityDescriptor;
 import net.tonbot.common.BotUtils;
-import net.tonbot.plugin.joke.sequencer.Sequence;
-import net.tonbot.plugin.joke.sequencer.SequenceExecutor;
-import net.tonbot.plugin.joke.sequencer.Wait;
+import net.tonbot.plugin.joke.model.Joke;
+import net.tonbot.plugin.joke.model.JokesBundle;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class TellMeAJokeActivity implements Activity {
 
 	private static final ActivityDescriptor ACTIVITY_DESCRIPTOR = ActivityDescriptor.builder()
 			.route("tell me a joke")
-			.description("Tell you a joke.")
+			.description("I tell you a joke.")
 			.build();
 
 	private final BotUtils botUtils;
-	private final SequenceExecutor sequenceExecutor;
+	private final JokesBundle jokesBundle;
+	private final JokeExecutor jokeExecutor;
 
 	@Inject
-	public TellMeAJokeActivity(BotUtils botUtils, SequenceExecutor sequenceExecutor) {
+	public TellMeAJokeActivity(BotUtils botUtils, JokesBundle jokesBundle, JokeExecutor jokeExecutor) {
 		this.botUtils = Preconditions.checkNotNull(botUtils, "botUtils must be non-null.");
-		this.sequenceExecutor = Preconditions.checkNotNull(sequenceExecutor, "sequenceExecutor must be non-null.");
+		this.jokesBundle = Preconditions.checkNotNull(jokesBundle, "jokesBundle must be non-null.");
+		this.jokeExecutor = Preconditions.checkNotNull(jokeExecutor, "jokeExecutor must be non-null.");
 	}
 
 	@Override
 	public void enact(MessageReceivedEvent event, String args) {
-		List<Sequence> jokes = ImmutableList.of(
-				Sequence.builder()
-						.perform(() -> botUtils.sendMessage(event.getChannel(), "What can think the unthinkable?"))
-						.perform(Wait.forMillis(3000))
-						.perform(() -> botUtils.sendMessage(event.getChannel(), "An itheberg."))
-						.build(),
-				Sequence.builder()
-						.perform(() -> botUtils.sendMessage(event.getChannel(),
-								"What's the difference between a hippo and a zippo?"))
-						.perform(Wait.forMillis(3000))
-						.perform(() -> botUtils.sendMessage(event.getChannel(),
-								"One's really heavy, the other's a little lighter"))
-						.build(),
-				Sequence.builder()
-						.perform(() -> botUtils.sendMessage(event.getChannel(),
-								"What's the stupidest animal in the jungle?"))
-						.perform(Wait.forMillis(3000))
-						.perform(() -> botUtils.sendMessage(event.getChannel(), "A polar bear."))
-						.build(),
-				Sequence.builder()
-						.perform(() -> botUtils.sendMessage(event.getChannel(),
-								"A sandwich walks into a bar. The bartender says \"sorry we don't serve food here\"."))
-						.build());
+		List<Joke> jokes = jokesBundle.getJokes();
 
-		Sequence randomJoke = jokes.get(new Random().nextInt(jokes.size()));
+		Joke joke;
+		try {
+			joke = jokes.get(Integer.parseInt(args));
+		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+			joke = jokes.get(new Random().nextInt(jokes.size()));
+		}
 
-		sequenceExecutor.execute(randomJoke);
+		jokeExecutor.execute(joke, event.getChannel(), botUtils);
 	}
 
 	@Override

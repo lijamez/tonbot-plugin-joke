@@ -1,5 +1,6 @@
 package net.tonbot.plugin.joke;
 
+import java.io.File;
 import java.util.Set;
 
 import com.google.inject.Guice;
@@ -8,6 +9,7 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 
 import net.tonbot.common.Activity;
+import net.tonbot.common.PluginSetupException;
 import net.tonbot.common.TonbotPlugin;
 import net.tonbot.common.TonbotPluginArgs;
 
@@ -18,7 +20,13 @@ public class JokePlugin extends TonbotPlugin {
 	public JokePlugin(TonbotPluginArgs pluginArgs) {
 		super(pluginArgs);
 
-		this.injector = Guice.createInjector(new JokeModule(pluginArgs.getBotUtils()));
+		File jokesBundleFile = new File(pluginArgs.getPluginDataDir(), "jokes.json");
+
+		if (!jokesBundleFile.exists()) {
+			throw new PluginSetupException("Jokes file does not exist at: " + jokesBundleFile.getAbsolutePath());
+		}
+
+		this.injector = Guice.createInjector(new JokeModule(pluginArgs.getBotUtils(), jokesBundleFile));
 	}
 
 	@Override
