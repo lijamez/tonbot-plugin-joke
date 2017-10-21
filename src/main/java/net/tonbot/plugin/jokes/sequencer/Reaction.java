@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke.sequencer;
+package net.tonbot.plugin.jokes.sequencer;
 
 @FunctionalInterface
 public interface Reaction<T> {

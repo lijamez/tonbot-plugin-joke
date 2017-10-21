@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke;
+package net.tonbot.plugin.jokes;
 
 import java.util.List;
 import java.util.Random;
@@ -9,8 +9,8 @@ import com.google.inject.Inject;
 import net.tonbot.common.Activity;
 import net.tonbot.common.ActivityDescriptor;
 import net.tonbot.common.BotUtils;
-import net.tonbot.plugin.joke.model.Joke;
-import net.tonbot.plugin.joke.model.JokesBundle;
+import net.tonbot.plugin.jokes.model.Joke;
+import net.tonbot.plugin.jokes.model.JokesBundle;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class TellMeAJokeActivity implements Activity {

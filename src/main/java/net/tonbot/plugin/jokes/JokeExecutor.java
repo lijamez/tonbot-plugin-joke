@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke;
+package net.tonbot.plugin.jokes;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import com.google.inject.Inject;
 
 import net.tonbot.common.BotUtils;
 import net.tonbot.common.TonbotTechnicalFault;
-import net.tonbot.plugin.joke.model.Joke;
-import net.tonbot.plugin.joke.model.JokeStep;
-import net.tonbot.plugin.joke.model.SayStep;
-import net.tonbot.plugin.joke.model.WaitStep;
-import net.tonbot.plugin.joke.sequencer.Sequence;
-import net.tonbot.plugin.joke.sequencer.SequenceBuilder;
-import net.tonbot.plugin.joke.sequencer.SequenceExecutor;
+import net.tonbot.plugin.jokes.model.Joke;
+import net.tonbot.plugin.jokes.model.JokeStep;
+import net.tonbot.plugin.jokes.model.SayStep;
+import net.tonbot.plugin.jokes.model.WaitStep;
+import net.tonbot.plugin.jokes.sequencer.Sequence;
+import net.tonbot.plugin.jokes.sequencer.SequenceBuilder;
+import net.tonbot.plugin.jokes.sequencer.SequenceExecutor;
 import sx.blah.discord.handle.obj.IChannel;
 
 class JokeExecutor {

@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke;
+package net.tonbot.plugin.jokes;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import com.google.inject.Singleton;
 
 import net.tonbot.common.Activity;
 import net.tonbot.common.BotUtils;
-import net.tonbot.plugin.joke.model.JokesBundle;
-import net.tonbot.plugin.joke.sequencer.SequenceExecutor;
+import net.tonbot.plugin.jokes.model.JokesBundle;
+import net.tonbot.plugin.jokes.sequencer.SequenceExecutor;
 
 class JokeModule extends AbstractModule {
 

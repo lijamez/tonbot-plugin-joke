@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke;
+package net.tonbot.plugin.jokes;
 
 import java.io.File;
 import java.util.Set;
@@ -13,11 +13,11 @@ import net.tonbot.common.PluginSetupException;
 import net.tonbot.common.TonbotPlugin;
 import net.tonbot.common.TonbotPluginArgs;
 
-public class JokePlugin extends TonbotPlugin {
+public class JokesPlugin extends TonbotPlugin {
 
 	private final Injector injector;
 
-	public JokePlugin(TonbotPluginArgs pluginArgs) {
+	public JokesPlugin(TonbotPluginArgs pluginArgs) {
 		super(pluginArgs);
 
 		File jokesBundleFile = new File(pluginArgs.getPluginDataDir(), "jokes.json");

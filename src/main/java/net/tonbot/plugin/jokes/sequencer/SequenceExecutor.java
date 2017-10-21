@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke.sequencer;
+package net.tonbot.plugin.jokes.sequencer;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;

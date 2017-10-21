@@ -1,4 +1,4 @@
-package net.tonbot.plugin.joke.model;
+package net.tonbot.plugin.jokes.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
