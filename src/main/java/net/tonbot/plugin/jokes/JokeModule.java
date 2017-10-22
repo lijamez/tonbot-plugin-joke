@@ -43,6 +43,12 @@ class JokeModule extends AbstractModule {
 
 	@Provides
 	@Singleton
+	Set<Object> rawEventListeners(MessageListener messageListener) {
+		return ImmutableSet.of(messageListener);
+	}
+
+	@Provides
+	@Singleton
 	SequenceExecutor sequenceExecutor() {
 		return new SequenceExecutor(Executors.newFixedThreadPool(5));
 	}

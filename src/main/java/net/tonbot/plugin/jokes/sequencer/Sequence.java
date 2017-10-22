@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Sequence {
 
-	private final List<Object> steps;
+	private final List<Step> steps;
 
-	Sequence(List<Object> steps) {
+	Sequence(List<Step> steps) {
 		this.steps = Preconditions.checkNotNull(steps, "steps must be non-null.");
 	}
 

@@ -2,6 +2,7 @@ package net.tonbot.plugin.jokes.sequencer;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 import com.google.common.base.Preconditions;
 
@@ -18,16 +19,47 @@ public class SequenceExecutor {
 	/**
 	 * Takes input and sends it to all sequences that are awaiting an event.
 	 * 
-	 * @param in
+	 * @param inputObj
+	 *            The input object. Non-null.
 	 */
-	public void takeInput(Object in) {
+	public void takeInput(Object inputObj) {
+		Preconditions.checkNotNull(inputObj, "inputObj must be non-null.");
 
 		for (SequenceExecution exec : executions) {
-			exec.takeInput(in);
+			exec.takeInput(inputObj);
 		}
 	}
 
+	/**
+	 * Executes a {@link Sequence}
+	 * 
+	 * @param sequence
+	 *            The {@link Sequence} to execute. Non-null.
+	 */
 	public void execute(Sequence sequence) {
-		execService.submit(new SequenceExecution(sequence));
+		Preconditions.checkNotNull(sequence, "sequence must be non-null.");
+
+		SequenceExecution seqExec = new SequenceExecution(sequence, this);
+
+		// Optimistically add the execution to the list.
+		// The add occurs first just in case notifyIsDone is called sooner than the add.
+		executions.add(seqExec);
+		try {
+			execService.submit(seqExec);
+		} catch (RejectedExecutionException e) {
+			executions.remove(seqExec);
+		}
 	}
+
+	/**
+	 * A callback function which {@link SequenceExecution} will call when they are
+	 * done executing.
+	 * 
+	 * @param sequence
+	 *            {@link Sequence} which finished execution.
+	 */
+	public void notifyIsDone(SequenceExecution sequenceExecution) {
+		executions.remove(sequenceExecution);
+	}
+
 }

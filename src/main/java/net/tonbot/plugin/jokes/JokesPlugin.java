@@ -36,6 +36,12 @@ public class JokesPlugin extends TonbotPlugin {
 	}
 
 	@Override
+	public Set<Object> getRawEventListeners() {
+		return injector.getInstance(Key.get(new TypeLiteral<Set<Object>>() {
+		}));
+	}
+
+	@Override
 	public String getActionDescription() {
 		return "Tell Jokes";
 	}

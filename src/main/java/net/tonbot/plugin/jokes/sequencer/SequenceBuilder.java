@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 
 public class SequenceBuilder {
 
-	private final List<Object> steps;
+	private final List<Step> steps;
 
 	public SequenceBuilder() {
 		this.steps = new ArrayList<>();

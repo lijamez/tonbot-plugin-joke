@@ -10,6 +10,7 @@ import net.tonbot.common.TonbotTechnicalFault;
 import net.tonbot.plugin.jokes.model.Joke;
 import net.tonbot.plugin.jokes.model.JokeStep;
 import net.tonbot.plugin.jokes.model.SayStep;
+import net.tonbot.plugin.jokes.model.WaitForMessageStep;
 import net.tonbot.plugin.jokes.model.WaitStep;
 import net.tonbot.plugin.jokes.sequencer.Sequence;
 import net.tonbot.plugin.jokes.sequencer.SequenceBuilder;
@@ -21,7 +22,8 @@ class JokeExecutor {
 	private final SequenceExecutor sequenceExecutor;
 
 	@Inject
-	public JokeExecutor(SequenceExecutor sequenceExecutor) {
+	public JokeExecutor(
+			SequenceExecutor sequenceExecutor) {
 		this.sequenceExecutor = Preconditions.checkNotNull(sequenceExecutor, "sequenceExecutor must be non-null.");
 	}
 
@@ -39,7 +41,7 @@ class JokeExecutor {
 				sb.perform(() -> botUtils.sendMessageSync(channel, sayStep.getMessage()));
 			} else if (jokeStep instanceof WaitStep) {
 				WaitStep waitStep = (WaitStep) jokeStep;
-				
+
 				sb.perform(() -> {
 					try {
 						channel.setTypingStatus(true);
@@ -49,6 +51,10 @@ class JokeExecutor {
 					} finally {
 						channel.setTypingStatus(false);
 					}
+				});
+			} else if (jokeStep instanceof WaitForMessageStep) {
+				WaitForMessageStep waitForMessageStep = (WaitForMessageStep) jokeStep;
+				sb.react(new FuzzyMessageMatcher(channel, waitForMessageStep.getMatches()), (e) -> {
 				});
 			}
 		}

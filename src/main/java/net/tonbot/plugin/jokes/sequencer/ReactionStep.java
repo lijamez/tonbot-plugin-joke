@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-class ReactionStep<T> {
+class ReactionStep<T> implements Step {
 
 	@NonNull
 	private final EventListener<T> eventListener;
