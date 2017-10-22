@@ -55,7 +55,7 @@ class JokeModule extends AbstractModule {
 	SequenceExecutor sequenceExecutor() {
 		ThreadFactory threadFactory = new ThreadFactoryBuilder()
 				.setNameFormat("Sequence-Execution-%d").build();
-		ExecutorService executorService = Executors.newFixedThreadPool(5, threadFactory);
+		ExecutorService executorService = Executors.newFixedThreadPool(10, threadFactory);
 		return new SequenceExecutor(executorService);
 	}
 

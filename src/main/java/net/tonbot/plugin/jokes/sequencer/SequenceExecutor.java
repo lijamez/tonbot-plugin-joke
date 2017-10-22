@@ -4,9 +4,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 public class SequenceExecutor {
+
+	private static final Logger LOG = LoggerFactory.getLogger(SequenceExecutor.class);
 
 	private final ExecutorService execService;
 	private final CopyOnWriteArrayList<SequenceExecution> executions;
@@ -47,6 +52,7 @@ public class SequenceExecutor {
 		try {
 			execService.submit(seqExec);
 		} catch (RejectedExecutionException e) {
+			LOG.warn("Unable to execute sequence.", e);
 			executions.remove(seqExec);
 		}
 	}
