@@ -3,7 +3,9 @@ package net.tonbot.plugin.jokes;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser.Feature;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -50,7 +53,10 @@ class JokeModule extends AbstractModule {
 	@Provides
 	@Singleton
 	SequenceExecutor sequenceExecutor() {
-		return new SequenceExecutor(Executors.newFixedThreadPool(5));
+		ThreadFactory threadFactory = new ThreadFactoryBuilder()
+				.setNameFormat("Sequence-Execution-%d").build();
+		ExecutorService executorService = Executors.newFixedThreadPool(5, threadFactory);
+		return new SequenceExecutor(executorService);
 	}
 
 	@Provides
