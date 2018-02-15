@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import net.tonbot.common.Activity;
 import net.tonbot.common.ActivityDescriptor;
 import net.tonbot.common.BotUtils;
+import net.tonbot.common.Enactable;
 import net.tonbot.plugin.jokes.model.Joke;
 import net.tonbot.plugin.jokes.model.JokesBundle;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -31,16 +32,11 @@ public class TellMeAJokeActivity implements Activity {
 		this.jokeExecutor = Preconditions.checkNotNull(jokeExecutor, "jokeExecutor must be non-null.");
 	}
 
-	@Override
-	public void enact(MessageReceivedEvent event, String args) {
+	@Enactable
+	public void enact(MessageReceivedEvent event) {
 		List<Joke> jokes = jokesBundle.getJokes();
 
-		Joke joke;
-		try {
-			joke = jokes.get(Integer.parseInt(args));
-		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-			joke = jokes.get(new Random().nextInt(jokes.size()));
-		}
+		Joke joke = jokes.get(new Random().nextInt(jokes.size()));
 
 		jokeExecutor.execute(joke, event.getChannel(), botUtils);
 	}
