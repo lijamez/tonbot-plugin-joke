@@ -22,8 +22,8 @@ repositories {
 dependencies {
     implementation group: 'com.github.lijamez', name: 'tonbot-common', version: 'master-SNAPSHOT'
 
-	implementation group: 'com.google.inject', name: 'guice', version: '4.1.0'
-	implementation group: 'com.google.guava', name: 'guava', version: '24.0-jre'
+	implementation group: 'com.google.inject', name: 'guice', version: '4.2.2'
+	implementation group: 'com.google.guava', name: 'guava', version: '27.1-jre'
 	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
 	
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.3'
